@@ -1,23 +1,47 @@
-# import all python files & pygame
+# Get rid of the annoying pygame message for cleaner console
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
+# Import all python files & pygame
 import pygame
 from constants import *
-
-#variables
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+from player import *
 
 def main():
-    pygame.init()
+    pygame.init() # initialize Pygame
+    
+    # Variables
+
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Set up display
+    clock = pygame.time.Clock() # Ensure steady frame rate
+    running = True # Main loop condition
+    dt = 0 # delta time
+    
+    # Create the player instance
+    x = SCREEN_WIDTH / 2
+    y = SCREEN_HEIGHT / 2
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
+    player = Player(x, y)
+    
 
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
 
-    while True:
+    while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        screen.fill(color=000)
+        screen.fill("black")
+        for i in drawable:
+            i.draw(screen)
         pygame.display.flip()
+        updatable.update(dt)
+        dt = clock.tick(60) / 1000
+        
+    
 
 # make sure the file is only called when run directly
 if __name__ == "__main__":
