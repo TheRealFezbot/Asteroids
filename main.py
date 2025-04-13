@@ -54,6 +54,12 @@ def main():
             if check == True:
                 print("Game over!")
                 return
+        for a in asteroids:
+            for s in shots:
+                check = s.check_collision(a)
+                if check == True:
+                    a.split()
+                    s.kill()
 
         dt = clock.tick(60) / 1000
         
